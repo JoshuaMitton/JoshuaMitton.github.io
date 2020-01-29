@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<!--
+	Ion by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>Josh Mitton</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+	</head>
+	<body id="top">
+
+		<!-- Header -->
+		<header id="header" style="height: 6.0em; line-height: 6.0em; padding: 0em 3em 0em 3em;">
+			<ul class="icons">
+				<li>
+					<a href="https://github.com/JoshuaMitton" class="icon fa-github" style="font-size: 28px"></a>
+				</li>
+				<li>
+					<a href="https://twitter.com/_J_M__" class="icon fa-twitter" style="font-size: 28px"></a>
+				</li>
+				<li>
+					<a href="https://www.linkedin.com/in/joshua-mitton/" class="icon fa-linkedin" style="font-size: 28px"></a>
+				</li>
+				<li>
+					<a href="https://scholar.google.com/citations?user=OHIUJkkAAAAJ&hl=en" class="icon fa-graduation-cap" style="font-size: 28px"></a>
+				</li>
+			</ul>
+			<nav id="nav" style="height: 6.0em; line-height: 6.0em; padding: 0em 3em 0em 3em;">
+				<ul>
+					<li><a href="index.html" style="font-size: 28px">Home</a></li>
+					<li><a href="blog.html" style="font-size: 28px">Blog</a></li>
+					<!-- <li><a href="publications.html" style="font-size: 28px">Publications</a></li> -->
+					<li><a href="contact.html" style="font-size: 28px">Contact</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Main -->
+		<!-- <section id="main" class="wrapper style1">
+			<header class="major">
+				<h2>Blog</h2>
+			</header>
+		</section> -->
+
+		<!-- One -->
+		<section id="one" class="wrapper style1">
+			<div class="container">
+				<div style="width: 75%; margin-left: auto; margin-right: auto">
+					<header class="major">
+						<h2>Understanding the Specral Graph Laplacian</h2>
+					</header>
+
+					<hr>
+
+					<h4>Josh Mitton, 9 Jan 2020</h4>
+
+					<hr>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-graph.png" width="400" alt="" /></div></div>
+
+					For an introduction to functions defined on graphs that are useful for understanding graph neural networks Zachary's karate club is used as the example graph. This graph is formed from 34 members of a university karate clubs social network. This graph is interesting to compare functions on graphs as the club split into two groups after a conflict; therefore graph nodes, <span class="math inline">\(X\)</span>, represent the group joined following the conflict and graph edges, <span class="math inline">\(E\)</span>, represent friendships before the splitting of the club, forming a graph, <span class="math inline">\(G=(X, E)\)</span>.
+
+					<br><br>
+					<h3>Gradients on graphs</h3>
+
+					The gradient function gives the direction of steepest increase. On a graph this is the direction of steepest increase between nodes. In the case of discrete node labels with two states, as in the karate club, the gradient function gives edges where there is a difference between adjoining node labels.
+
+					<br><br>
+
+					In the case of the karate club colouring the edges by there respective gradient values highlights friendships that existed between two members who went on to join different groups after the group split.
+
+					<br><br>
+
+					The gradient function maps from graph nodes to graph edges. It can be intuitively interpreted as the difference between the function evaluated at two points or in the case of the graph two nodes, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span>
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\(\nabla: \mathcal{F} (\mathcal{V}) \rightarrow \mathcal{F}(\mathcal{\varepsilon}) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<span class="math inline">\(\ (\nabla f)_{ij} = f_i - f_j \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-gradient.png" width="400" alt="" /></div></div>
+
+					<br>
+
+					In addition to the intuitive interpretation, the gradient function on a graph can be defined from an incidence matrix, <span class="math inline">\(K\)</span>, whose transpose maps functions over vertices to edges. The matrix <span class="math inline">\(K\)</span> is an <span class="math inline">\( (A,B) \)</span> matrix, with <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> the number of nodes and edges respectively. To construct <span class="math inline">\(K\)</span>, for every edge, <span class="math inline">\(e=(i,j)\)</span>, <span class="math inline">\(K_{i,e} = +1\)</span> and <span class="math inline">\(K_{j,e} = -1\)</span>.
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\(\nabla: \mathcal{F} (\mathcal{V}) \rightarrow \mathcal{F}(\mathcal{\varepsilon}) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<span class="math inline">\(\ (\nabla f)_{ij} = K^{T} f \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-gradient-v2.png" width="400" alt="" /></div></div>
+
+					<br><br>
+					<h3>Divergences on graphs</h3>
+
+					The divergence of a function represents the density of an outward flux of the function from an infinitesimal volume around a given point. In the case of a graph the infinitesimal volume becomes the sum over neighbouring nodes of the outward flux of the edge function. On a graph with edges representing a constant function, i.e. friendship in the case of the karate club, the divergence becomes the number of neighbours of the node.
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\(\nabla: \mathcal{F} (\mathcal{\varepsilon}) \rightarrow \mathcal{F}(\mathcal{V}) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<span class="math inline">\( \mathrm{div} F_{i} = \dfrac{1}{a_i} \sum_{j:(i,j) \in \varepsilon} w_{ij} F_{ij} \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-divergence.png" width="400" alt="" /></div></div>
+
+					Similarly to the definition of the gradient function, the divergence on a graph can be defined in terms of an incidence matrix, <span class="math inline">\(K\)</span>. The matrix <span class="math inline">\(K\)</span> is defined in the same way as it was when computing the gradient function.
+
+					<br><br>
+
+					It should be noted that the divergence values are double that given by the more intuitive method. This is due to the definition using incidence matrices operating on directed graphs, while the previous definition operates on undirected graphs. This yields twice the number of edges using the incidence definition.
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\(\nabla: \mathcal{F} (\mathcal{\varepsilon}) \rightarrow \mathcal{F}(\mathcal{V}) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<span class="math inline">\( \mathrm{div} F_{i} = K f \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-divergence-v2.png" width="400" alt="" /></div></div>
+
+					<br><br>
+					<h3>Laplacians on graphs</h3>
+
+					The Laplacian is the equal to the negative divergence of the gradient function. This is equal to the difference between the gradient function evaluated at a point and the average of the gradient function on a infinitesimal sphere around the point. In the discrete case of a graph the infinitesimal sphere becomes the sum over neighbouring nodes. The Laplacian then becomes the sum of the gradient function scaled by the associated edge weight between the two nodes evaluated over neighbouring nodes.
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\(\nabla: \mathcal{F} (\mathcal{V}) \rightarrow \mathcal{F}(\mathcal{V}) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<span class="math inline">\( (\Delta F)_{i} = \dfrac{1}{a_i} \sum_{j:(i,j) \in \varepsilon} w_{ij} (f_i - f_j) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-laplacian-sumovergrads.png" width="400" alt="" /></div></div>
+
+					The Laplacian function on a graph can also be defined in terms of an incidence matrix, <span class="math inline">\(K\)</span>. The matrix <span class="math inline">\(K\)</span> is defined in the same way as it was when computing the gradient function. It should be noted that the Laplacian values are double that given by the more intuitive method. This is due to the definition using incidence matrices operating on directed graphs, while the previous definition operates on undirected graphs. This yields twice the number of edges using the incidence definition.
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\(\nabla: \mathcal{F} (\mathcal{V}) \rightarrow \mathcal{F}(\mathcal{V}) \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<span class="math inline">\( (\Delta F)_{i} = \mathrm{div} (\mathrm{grad} (f)) = K K^{T} f \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-laplacian-incidence.png" width="400" alt="" /></div></div>
+
+					Finally, another definition of the graph Laplacian is given in spectral graph theory. In spectral graph theory the graph Laplacian if given in the equation below, with a further definition of the Laplacian normalised by the degree matrix of the graph. 
+
+					<br><br>
+
+					<div align="center">
+					<span class="math inline">\( \Delta = \mathrm{D} - \mathrm{A} \)</span>
+					</div>
+
+					<br>
+
+					<div align="center">
+					<div class="image rounded" style="margin-bottom: 1.5em;"><img src="images/graph-basics/karate-club-laplacian-spectral.png" width="400" alt="" /></div></div>
+
+					The Laplacian definitions given yield the same results demonstrating the three definitions amount to the same Laplacian. The first given is an intuitive example that can be seen to follow from the standard definition of the Laplacian in a Euclidean domain. Following from this, the definition given using an incidence matrix can be seen to equate to the same values as that from the intuitive example. This definition using an incidence matrix also corresponds to the same values when looking at gradients and divergence allowing comparison between the more intuitive method and the incidence matrix method. In addition to equating to the same values, the definition given by an incidence matrix allows the operator, <span class="math inline">\(K K^{T}\)</span>, to be extracted easily and looked at without being applied to the function over vertices. Finally, the definition given by spectral graph theory can be seen to also produce the same results allowing understanding to be drawn from the more intuitive method and applied to the spectral method commonly using in graph theory. Extracting the operator allows for comparison to the incidence matrix method demonstrating that <span class="math inline">\( D - A = K K^{T} \)</span>.
+
+					<br><br>
+
+					The Laplacian operator on the karate club shows the number of friendships each person had with someone who joined the opposite group after the group split. This can be seen from the definition of the Laplacian as the divergence of the gradient function. The gradient function maps from nodes to edges giving value to edges where there is a friendship spanning a difference in end group choice and zero where the friendship pair join the same group. The divergence is then summing for each member/node over adjoining edge functions, the gradient values, to give the Laplacian. This summation over adjoining edge functions is summing the friendships that spanned different groups after the club split. From this it can be seen that nodes with large positive Laplacian value are people who ultimately joined the group of Mr. Hi, but had many friendships with members who joined the group of Officer; on the other hand, nodes with large negative Laplacian were people who ultimately joined the group of Officer, but had many friendships with members who joined the group of Mr. Hi.
+
+
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<div class="container">
+				<ul class="copyright">
+					<li>&copy; 2019 Josh Mitton</li>
+					<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+				</ul>
+			</div>
+		</footer>
+
+	</body>
+</html>
